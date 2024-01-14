@@ -12,10 +12,10 @@ namespace Infra.Data.Repositorys
     {
         public Departamento ObterDepartamentoCSV(string caminhoCSV)
         {
-            var departamento = new Departamento();
+            if (!File.Exists(caminhoCSV))
+                throw new InvalidOperationException("Erro ao Achar o caminho do arquivo");
 
             var arquivo = new FileInfo(caminhoCSV);
-
             var nomeAquivo = arquivo.Name.Contains("-") ? arquivo.Name.Split("-") : Array.Empty<string>();
 
             if (nomeAquivo.Length >= 2)
@@ -28,36 +28,33 @@ namespace Infra.Data.Repositorys
                 {
                     Nome = nomeDepartamento,
                     Mes = mesVigencia,
-                    Ano = int.Parse(anoVigencia)
+                    Ano = int.Parse(anoVigencia),
+                    Funcionarios = ObterFuncionarios(caminhoCSV)
                 };
             }
-
-            return departamento;
+            else
+            {
+                throw new InvalidOperationException("Nome do arquivo não está com esperado, Exemplo: 'nome-mes-ano.csv'");
+            }
         }
 
         private List<Funcionario> ObterFuncionarios(string caminhoDoArquivo)
         {
             var listaDeFuncionarios = new List<Funcionario>();
-            
 
-            using var sr = new StreamReader(caminhoDoArquivo);
+            var linhas = File.ReadAllLines(caminhoDoArquivo);
 
-            
-
-
-            while (!sr.EndOfStream)
+            foreach (var linha in linhas)
             {
                 // Verificar se a linha lida é a primeira, caso sim, ignora-la, caso não seguir o fluxo.
                 // TAREFA PRA FAZER
 
-                var linha = sr.ReadLine();
                 var arrayDados = linha.Split(";");
 
-                if(arrayDados.Length >= 7)
+                if (arrayDados.Length >= 7)
                 {
-                    var codigo = arrayDados[0];
-                    var nome = arrayDados[1];
-                    var valor = double.Parse(arrayDados[2]);
+                    var funcionario = (Funcionario)arrayDados;
+
                     var data = DateTime.Parse(arrayDados[3]);
                     var entrada = TimeSpan.Parse(arrayDados[4]);
                     var saida = TimeSpan.Parse(arrayDados[5]);
@@ -66,12 +63,10 @@ namespace Infra.Data.Repositorys
                     var almocoEntrada = TimeSpan.Parse(almocoHorarios[0]);
                     var almocoSaida = TimeSpan.Parse(almocoHorarios[1]);
 
-                    var funcionario = new Funcionario(int.Parse(codigo), nome, valor);
                     var horario = new DiaTrabalhado(data, entrada, almocoEntrada, almocoSaida, saida);
 
                     funcionario.AdicionarDiaTrabalhado(horario);
                     listaDeFuncionarios.Add(funcionario);
-                    
                 }
             }
 

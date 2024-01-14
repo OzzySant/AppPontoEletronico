@@ -21,6 +21,18 @@ namespace Core.Entidades
             // DiasTrabalhados = new List<DiaTrabalhado>();
         }
 
+
+        public static implicit operator Funcionario(string[] dados)
+        {
+            var codigo = dados[0];
+            var nome = dados[1];
+            var valor = double.Parse(dados[2]);
+            
+            return new Funcionario(int.Parse(codigo), nome, valor);
+        }
+
+
+
         public void AdicionarDiaTrabalhado(DiaTrabalhado diaTrabalhado)
         {
             DiasTrabalhados.Add(diaTrabalhado);
