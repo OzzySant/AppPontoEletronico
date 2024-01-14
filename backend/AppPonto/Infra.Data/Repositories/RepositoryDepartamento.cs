@@ -1,4 +1,5 @@
 ﻿using Core.Entidades;
+using Core.Helpers;
 using Core.Interface;
 using System;
 using System.Collections.Generic;
@@ -42,12 +43,14 @@ namespace Infra.Data.Repositorys
         {
             var listaDeFuncionarios = new List<Funcionario>();
 
-            var linhas = File.ReadAllLines(caminhoDoArquivo);
+            var linhas = File.ReadAllLines(caminhoDoArquivo, Encoding.UTF8);
 
-            foreach (var linha in linhas)
+            for(int i = 0; i < linhas.Length; i++)
             {
-                // Verificar se a linha lida é a primeira, caso sim, ignora-la, caso não seguir o fluxo.
-                // TAREFA PRA FAZER
+                if(i == 0)
+                    continue;
+
+                var linha = linhas[i];
 
                 var arrayDados = linha.Split(";");
 
@@ -55,15 +58,18 @@ namespace Infra.Data.Repositorys
                 {
                     var funcionario = (Funcionario)arrayDados;
 
-                    var data = DateTime.Parse(arrayDados[3]);
+                    var data = arrayDados[3].ConverterStringParaData();
                     var entrada = TimeSpan.Parse(arrayDados[4]);
                     var saida = TimeSpan.Parse(arrayDados[5]);
 
                     var almocoHorarios = arrayDados[6].Split("-");
-                    var almocoEntrada = TimeSpan.Parse(almocoHorarios[0]);
-                    var almocoSaida = TimeSpan.Parse(almocoHorarios[1]);
+                    var almocoEntrada = TimeSpan.Parse(almocoHorarios[0].Trim());
+                    var almocoSaida = TimeSpan.Parse(almocoHorarios[1].Trim());
 
                     var horario = new DiaTrabalhado(data, entrada, almocoEntrada, almocoSaida, saida);
+
+                    // Adicionar uma verificação caso o codigo de usuario já esteja adicionado na lista de funcionarios
+                    // pegar funcionario e adicionar dia trabalhado
 
                     funcionario.AdicionarDiaTrabalhado(horario);
                     listaDeFuncionarios.Add(funcionario);
