@@ -18,15 +18,21 @@ namespace Core.Entidades
             Codigo = codigo;
             Nome = nome;
             ValorDaHora = valorDaHora;
-            // DiasTrabalhados = new List<DiaTrabalhado>();
+            DiasTrabalhados = new List<DiaTrabalhado>();
         }
 
-
+        /// <summary>
+        /// Efetua a conversão de um array de string para um objeto utilizando um recurso do C# 12
+        /// </summary>
+        /// <param name="dados"></param>
         public static implicit operator Funcionario(string[] dados)
         {
             var codigo = dados[0];
             var nome = dados[1];
-            var valor = double.Parse(dados[2]);
+
+            string valorFormatado = dados[2].Replace("R$ ", "").Replace(", ", ",");
+
+            var valor = double.Parse(valorFormatado);
             
             return new Funcionario(int.Parse(codigo), nome, valor);
         }
