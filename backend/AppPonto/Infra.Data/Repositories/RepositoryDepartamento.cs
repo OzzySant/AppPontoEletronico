@@ -68,11 +68,19 @@ namespace Infra.Data.Repositorys
 
                     var horario = new DiaTrabalhado(data, entrada, almocoEntrada, almocoSaida, saida);
 
-                    // Adicionar uma verificação caso o codigo de usuario já esteja adicionado na lista de funcionarios
-                    // pegar funcionario e adicionar dia trabalhado
+                    // Pega a lista de funcionarios e verifica se existe algum funcionario ja adicionado com codigo
+                    if(listaDeFuncionarios.Exists(f => f.Codigo == funcionario.Codigo))
+                    {
+                        var funcionarioEncontrado = listaDeFuncionarios.First(f => f.Codigo == funcionario.Codigo);
+                        // Pega funcionario e adiciona o dia trabalhado
+                        funcionarioEncontrado.AdicionarDiaTrabalhado(horario);
+                    }
+                    else
+                    {
+                        funcionario.AdicionarDiaTrabalhado(horario);
+                        listaDeFuncionarios.Add(funcionario);
+                    }
 
-                    funcionario.AdicionarDiaTrabalhado(horario);
-                    listaDeFuncionarios.Add(funcionario);
                 }
             }
 
