@@ -14,44 +14,13 @@
 
         <q-toolbar-title
           v-if="$q.screen.gt.sm"
-          shrink
-          class="row items-center no-wrap"
+          class="row items-start no-wrap text-dark"
         >
-          <q-icon name="history" />
-          <span class="q-ml-sm">App</span>
+          <!-- <q-icon name="history" /> -->
+          <span class="">App</span>
         </q-toolbar-title>
 
         <q-space />
-
-        <q-input
-          class="GPL__toolbar-input"
-          dense
-          standout="bg-primary"
-          v-model="search"
-          placeholder="Buscar"
-        >
-          <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search" />
-            <q-icon
-              v-else
-              name="clear"
-              class="cursor-pointer"
-              @click="search = ''"
-            />
-          </template>
-        </q-input>
-
-        <q-btn
-          v-if="$q.screen.gt.xs"
-          flat
-          dense
-          no-wrap
-          color="primary"
-          icon="cloud_upload"
-          no-caps
-          label="Upload CSV"
-          class="q-ml-sm q-px-md"
-        />
 
         <q-space />
 
@@ -79,7 +48,7 @@
       <q-scroll-area class="fit">
         <q-toolbar class="GPL__toolbar">
           <q-toolbar-title class="row items-center text-grey-8">
-            <q-icon name="history" lass="q-pl-md" />
+            <q-icon name="menu" ass="q-pl-md" />
             <span class="q-ml-sm">Menus</span>
           </q-toolbar-title>
         </q-toolbar>
@@ -92,7 +61,6 @@
       <q-page-sticky v-if="$q.screen.gt.sm" expand position="left">
         <div class="fit q-pt-xl q-px-sm column">
           <q-btn
-            round
             flat
             color="grey-8"
             stack
@@ -100,8 +68,8 @@
             size="26px"
             class="GPL__side-btn"
           >
-            <q-icon size="22px" name="person" />
-            <div class="GPL__side-btn__label">Usuários</div>
+            <q-icon size="22px" name="schedule" />
+            <div class="GPL__side-btn__label">Importação de Horas</div>
           </q-btn>
         </div>
       </q-page-sticky>
@@ -113,12 +81,11 @@
 import { ref } from 'vue';
 
 export default {
-  name: 'GooglePhotosLayout',
+  name: 'MainLayout',
 
   setup() {
     const leftDrawerOpen = ref(false);
     const search = ref('');
-    const storage = ref(0.26);
 
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -127,33 +94,6 @@ export default {
     return {
       leftDrawerOpen,
       search,
-      storage,
-
-      links1: [
-        { icon: 'photo', text: 'Photos' },
-        { icon: 'photo_album', text: 'Albums' },
-        { icon: 'assistant', text: 'Assistant' },
-        { icon: 'people', text: 'Sharing' },
-        { icon: 'book', text: 'Photo books' },
-      ],
-      links2: [
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' },
-      ],
-      links3: [
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'help', text: 'Help & Feedback' },
-        { icon: 'get_app', text: 'App Downloads' },
-      ],
-      createMenu: [
-        { icon: 'photo_album', text: 'Album' },
-        { icon: 'people', text: 'Shared Album' },
-        { icon: 'movie', text: 'Movie' },
-        { icon: 'library_books', text: 'Animation' },
-        { icon: 'dashboard', text: 'Collage' },
-        { icon: 'book', text: 'Photo book' },
-      ],
-
       toggleLeftDrawer,
     };
   },
@@ -162,7 +102,6 @@ export default {
 
 <style lang="sass">
 .GPL
-
   &__toolbar
     height: 64px
 
