@@ -1,6 +1,10 @@
+using Core.Entidades.App;
 using Infra.IOC;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuracao = new ConfiguracaoAmbiente();
+builder.Configuration.GetSection("ConfiguracaoAmbiente").Bind(configuracao);
+builder.Services.AddSingleton(configuracao);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
