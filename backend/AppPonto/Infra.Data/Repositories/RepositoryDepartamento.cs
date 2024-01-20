@@ -1,16 +1,33 @@
 ﻿using Core.Entidades;
+using Core.Entidades.App;
 using Core.Helpers;
 using Core.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Data.Repositorys
 {
     public class RepositoryDepartamento : IRepositoryDepartamento
     {
+        private readonly ConfiguracaoAmbiente _config;
+
+        public RepositoryDepartamento(ConfiguracaoAmbiente config)
+        {
+            _config = config;
+        }
+
+        public IEnumerable<Departamento> ObterDepartamentos()
+        {
+            var sql = "select * from Departamento";
+
+            using SqlConnection connection = new SqlConnection(_config.ConnectionString);
+
+            var dados = connection.Query<Departamento>(sql);
+
+            return dados;
+        }
+
         public Departamento ObterDepartamentoCSV(string caminhoCSV)
         {
             if (!File.Exists(caminhoCSV))

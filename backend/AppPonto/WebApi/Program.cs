@@ -1,9 +1,12 @@
 using Core.Entidades.App;
 using Infra.IOC;
+using WebApi.Middlwares;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var configuracao = new ConfiguracaoAmbiente();
 builder.Configuration.GetSection("ConfiguracaoAmbiente").Bind(configuracao);
+
 builder.Services.AddSingleton(configuracao);
 
 builder.Services.AddControllers();
@@ -26,6 +29,8 @@ builder.Services.AddCors(options =>
 builder.Services.InjetarDependencias();
 
 var app = builder.Build();
+
+app.UseMiddleware<ErrorMidlware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();

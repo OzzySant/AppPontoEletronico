@@ -19,9 +19,21 @@ public class ServiceDepartamento : IServiceDepartamento
 
     public Departamento ObterDepartamentoCSV(string caminhoCsv, string usuario)
     {
-        if (!_serviceUsuarioQualificado.UsuarioQualificado(usuario))
-            throw new Exception("Usuario não qualificado para operação!");
+        VerificarUsuarioValido(usuario);
 
         return _repository.ObterDepartamentoCSV(caminhoCsv);
+    }
+
+    public List<Departamento> ObterTodosDepartamentos(string usuario)
+    {
+        VerificarUsuarioValido(usuario);
+
+        return _repository.ObterDepartamentos().ToList();   
+    }
+
+    private void VerificarUsuarioValido(string usuario)
+    {
+        if (!_serviceUsuarioQualificado.UsuarioQualificado(usuario))
+            throw new InvalidOperationException("Usuario não qualificado para operação!");
     }
 }

@@ -15,7 +15,6 @@ class AxiosService {
 
   async postFormData<T>(url: string, dados: FormData) {
     const result = await this.api.post<T>(url, dados);
-
     return result.data;
   }
 }

@@ -64,7 +64,20 @@
             flat
             color="grey-8"
             stack
+            to="/"
             no-caps
+            size="26px"
+            class="GPL__side-btn"
+          >
+            <q-icon size="22px" name="schedule" />
+            <div class="GPL__side-btn__label">Importação de Horas</div>
+          </q-btn>
+          <q-btn
+            flat
+            color="grey-8"
+            stack
+            no-caps
+            to="/user"
             size="26px"
             class="GPL__side-btn"
           >

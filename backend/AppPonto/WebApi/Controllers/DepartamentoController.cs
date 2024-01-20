@@ -17,26 +17,25 @@ namespace WebApi.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public IActionResult ObterDepartamentos([FromQuery] string usuario)
+        {
+            return Ok(_service.ObterTodosDepartamentos(usuario));
+        }
+
         [HttpPost("ObterDadosDepartamentoCSV")]
         public IActionResult ObterDadosDepartamentoCSV([FromForm] DadosDepartamentoCSV dados)
         {
-            try
+            var caminho = Path.Combine(Path.GetTempPath(), dados.Arquivo.FileName);
+
+            using (FileStream fileStream = System.IO.File.Create(caminho))
             {
-                var caminho = Path.Combine(Path.GetTempPath(), dados.Arquivo.FileName);
-
-                using (FileStream fileStream = System.IO.File.Create(caminho))
-                {
-                    dados.Arquivo.CopyTo(fileStream);
-                }
-
-                var departamento = _service.ObterDepartamentoCSV(caminho, dados.Usuario);
-
-                return Ok(departamento);
+                dados.Arquivo.CopyTo(fileStream);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var departamento = _service.ObterDepartamentoCSV(caminho, dados.Usuario);
+
+            return Ok(departamento);
         }
     }
 }

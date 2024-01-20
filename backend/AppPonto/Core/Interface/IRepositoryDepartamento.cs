@@ -6,7 +6,6 @@ namespace Core.Interface
     public interface IRepositoryDepartamento
     {
         Departamento ObterDepartamentoCSV(string caminhoCSV);
-
-        List<Departamento> ObterDeparamentos();
+        IEnumerable<Departamento> ObterDepartamentos();
     }
 }
